@@ -60,7 +60,7 @@ public class ServerControllerSocket extends Thread {
                         //Se ha producido un error
                         System.out.println(((Status) o).description);
                         live = false;
-                    } else if(((Status) o).ID == 2){
+                    } else if (((Status) o).ID == 2) {
                         System.out.println(((Status) o).description);
                     }
                 } else if (o instanceof Peticion) {
@@ -77,6 +77,27 @@ public class ServerControllerSocket extends Thread {
         try {
             Peticion p = new Peticion("echo");
             p.pushData(str);
+            out.writeObject(p);
+        } catch (IOException ex) {
+
+        }
+    }
+
+    public void openServer(int x, int y) {
+        try {
+            Peticion p = new Peticion("open_map");
+            p.pushData(x);
+            p.pushData(y);
+            out.writeObject(p);
+        } catch (IOException ex) {
+
+        }
+    }
+
+    public void setPlantilla(int[][] plantilla) {
+        try {
+            Peticion p = new Peticion("set_plantilla");
+            p.pushData(plantilla);
             out.writeObject(p);
         } catch (IOException ex) {
 
