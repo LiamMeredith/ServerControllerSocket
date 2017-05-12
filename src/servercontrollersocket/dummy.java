@@ -33,9 +33,31 @@ public class dummy {
             i = new Scanner(System.in);
             switch (option) {
                 case 1:
-                    c.echo("hola");
+                    c.openServer(3, 2);
                     break;
-    
+                case 2:
+                    c.getSetting();
+                    break;
+                case 3:
+                    int[][] p = new int[4][2];
+                    int[] a = {0, 0};
+                    //pantalla uno
+                    p[0][0] = 0;
+                    p[0][1] = 0;
+                    //pantalla dos
+                    p[1][0] = 0;
+                    p[1][1] = 1;
+                    //pantalla tres
+                    p[2][0] = 0;
+                    p[2][1] = 2;
+                    //pantalla cuatro
+                    p[3][0] = 1;
+                    p[3][1] = 1;
+                    c.setPlantilla(p);
+                    break;
+                case 4:
+                    c.startServer();
+                    break;
             }
         }
 

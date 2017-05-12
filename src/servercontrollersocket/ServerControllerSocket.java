@@ -65,7 +65,9 @@ public class ServerControllerSocket extends Thread {
                     }
                 } else if (o instanceof Peticion) {
                     switch (((Peticion) o).getAccion()) {
-
+                        case "get_settings":
+                            System.out.println(((String) ((Peticion) o).getObject(0)));
+                            break;
                     }
                 }
             } catch (IOException | ClassNotFoundException ex) {
@@ -98,6 +100,24 @@ public class ServerControllerSocket extends Thread {
         try {
             Peticion p = new Peticion("set_plantilla");
             p.pushData(plantilla);
+            out.writeObject(p);
+        } catch (IOException ex) {
+
+        }
+    }
+
+    public void startServer() {
+        try {
+            Peticion p = new Peticion("open_server");
+            out.writeObject(p);
+        } catch (IOException ex) {
+
+        }
+    }
+
+    public void getSetting() {
+        try {
+            Peticion p = new Peticion("get_settings");
             out.writeObject(p);
         } catch (IOException ex) {
 
