@@ -45,11 +45,11 @@ public class dummy {
                     p[0][0] = 0;
                     p[0][1] = 0;
                     //pantalla dos
-                    p[1][0] = 0;
-                    p[1][1] = 1;
+                    p[1][0] = 1;
+                    p[1][1] = 0;
                     //pantalla tres
-                    p[2][0] = 0;
-                    p[2][1] = 2;
+                    p[2][0] = 2;
+                    p[2][1] = 0;
                     //pantalla cuatro
                     p[3][0] = 1;
                     p[3][1] = 1;
@@ -57,6 +57,16 @@ public class dummy {
                     break;
                 case 4:
                     c.startServer();
+                    break;
+                case 5:
+                    int[] w1 = {0, 0};
+                    int[] w2 = {1, 0};
+                    c.moveWindow(w1, w2);
+                    break;
+                case 6:
+                    int[] w3 = {1, 0};
+                    int[] w4 = {2, 0};
+                    c.moveWindow(w3, w4);
                     break;
             }
         }

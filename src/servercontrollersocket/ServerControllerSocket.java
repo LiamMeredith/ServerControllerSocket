@@ -124,6 +124,20 @@ public class ServerControllerSocket extends Thread {
         }
     }
 
+    
+    //int[0] is X int[1] is Y
+    public void moveWindow(int[] w1, int[] w2) {
+        try {
+            Peticion p = new Peticion("move_window");
+            p.pushData(w1);
+            p.pushData(w2);
+            out.writeObject(p);
+        } catch (IOException ex) {
+
+        }
+    }
+    
+
     private void Register() {
         try {
             out.writeObject("server_controller");
