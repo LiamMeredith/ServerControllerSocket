@@ -33,7 +33,7 @@ public class dummy {
             i = new Scanner(System.in);
             switch (option) {
                 case 1:
-                    c.openServer(3, 2);
+                    c.openServer(3, 2, "billar");
                     break;
                 case 2:
                     c.getSetting();
@@ -67,6 +67,15 @@ public class dummy {
                     int[] w3 = {1, 0};
                     int[] w4 = {2, 0};
                     c.moveWindow(w3, w4);
+                    break;
+                case 7:
+                    int[][] p1 = new int[1][2];
+                    p1[0][0] = 0;
+                    p1[0][1] = 0;
+                    c.setPlantilla(p1);
+                    break;
+                case 8:
+                    c.getScenarios();
                     break;
             }
         }

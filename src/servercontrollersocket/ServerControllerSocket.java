@@ -47,9 +47,9 @@ public class ServerControllerSocket extends Thread {
         } catch (IOException ex) {
             System.out.println("refused server connection");
         }
-
+        
     }
-
+    
     @Override
     public void run() {
         while (live) {
@@ -59,14 +59,20 @@ public class ServerControllerSocket extends Thread {
                     if (((Status) o).ID >= 500) {
                         //Se ha producido un error
                         System.out.println(((Status) o).description);
-                        live = false;
                     } else if (((Status) o).ID == 2) {
+                        //outprint dedicated for echo
                         System.out.println(((Status) o).description);
                     }
                 } else if (o instanceof Peticion) {
                     switch (((Peticion) o).getAccion()) {
                         case "get_settings":
                             System.out.println(((String) ((Peticion) o).getObject(0)));
+                            break;
+                        case "get_scenarios":
+                            String[] scenarios = ((String[]) ((Peticion) o).getObject(0));
+                            for (int i = 0; i < scenarios.length; i++) {
+                                System.out.println(scenarios[i]);
+                            }
                             break;
                     }
                 }
@@ -75,16 +81,45 @@ public class ServerControllerSocket extends Thread {
         }
     }
 
+    /**
+     * Sends string to server and returns it
+     *
+     * @param str
+     */
     public void echo(String str) {
         try {
             Peticion p = new Peticion("echo");
             p.pushData(str);
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
 
+    /**
+     * does a initialization of the virtual map object
+     *
+     * @param x
+     * @param y
+     */
+    public void openServer(int x, int y, String scenario) {
+        try {
+            Peticion p = new Peticion("open_map");
+            p.pushData(x);
+            p.pushData(y);
+            p.pushData(scenario);
+            out.writeObject(p);
+        } catch (IOException ex) {
+            
+        }
+    }
+
+    /**
+     * does a initialization of the virtual map object
+     *
+     * @param x
+     * @param y
+     */
     public void openServer(int x, int y) {
         try {
             Peticion p = new Peticion("open_map");
@@ -92,40 +127,67 @@ public class ServerControllerSocket extends Thread {
             p.pushData(y);
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
 
+    /**
+     * Gets scenarios from db
+     */
+    public void getScenarios() {
+        try {
+            Peticion p = new Peticion("get_scenarios");
+            out.writeObject(p);
+        } catch (IOException ex) {
+            
+        }
+    }
+
+    /**
+     * Sets the structure of the screens positioning
+     *
+     * @param plantilla
+     */
     public void setPlantilla(int[][] plantilla) {
         try {
             Peticion p = new Peticion("set_plantilla");
             p.pushData(plantilla);
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
 
+    /**
+     * Opens server meaning that the clients can now connectto the server
+     */
     public void startServer() {
         try {
             Peticion p = new Peticion("open_server");
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
 
+    /**
+     * Asks server tha configuration
+     */
     public void getSetting() {
         try {
             Peticion p = new Peticion("get_settings");
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
 
-    
-    //int[0] is X int[1] is Y
+    /**
+     * exchanges the position of two screens
+     *
+     * @param w1
+     * @param w2
+     */
     public void moveWindow(int[] w1, int[] w2) {
         try {
             Peticion p = new Peticion("move_window");
@@ -133,11 +195,13 @@ public class ServerControllerSocket extends Thread {
             p.pushData(w2);
             out.writeObject(p);
         } catch (IOException ex) {
-
+            
         }
     }
-    
 
+    /**
+     * Registers client in the server
+     */
     private void Register() {
         try {
             out.writeObject("server_controller");
@@ -185,7 +249,7 @@ public class ServerControllerSocket extends Thread {
             byte[] recvBuf = new byte[15000];
             DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
             c.receive(receivePacket);
-
+            
             String message = new String(receivePacket.getData()).trim();
             if (message.equals("/ping")) {
                 ip = receivePacket.getAddress();
